@@ -1,11 +1,11 @@
 # coding=utf-8
-from User import User
-from Post import Post
+import bottle
 
-class Response:
-    
-    def __init__(self):
-        pass
-    
-    def response(self, request):
-        pass
+bottle.debug(True)
+
+def application():
+    return bottle.default_app()
+
+@bottle.route('/')
+def hello():
+    return "Hello World!"
