@@ -1,8 +1,8 @@
 # coding=utf-8
 """
-reads from an ini file
+change to reading from an ini file
 """
 class Settings():
-    database = 'c:\\Users\\bjorn\\Documents\\Programming\\www\\data\\cobloggingV3.sql'
+    appDB = 'c:\\Users\\bjorn\\Documents\\Programming\\www\\data\\coblog_appDB.sql'
     def __init__(self):
         pass

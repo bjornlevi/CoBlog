@@ -9,7 +9,7 @@ class DB(object):
     
     def __init__(self):
         object.__init__(self)
-        self.database = Settings().database
+        self.database = Settings().appDB
         self.connect()
         self.close()
         
@@ -42,31 +42,18 @@ class DB(object):
         finally:
             self.commit_and_close()
     
-    def get_user_info(self, user):
-        if 'user' in self.table:
-            return self.get("where user='"+user+"'")
-        else:
-            return []
-
-    def get_post_info(self, post):
-        if 'post' in self.table:
-            return self.get("where post='"+post+"'")
-        else:
-            return []
-    
-    def get(self, where=''):
+    def get(self, query, values=()):
         """
         get all data from table_name
-        @where is the string version of the where clause
+        @query is the sql query
         Error and empty results return []
         otherwise returns [{row1},{row2},...] 
         dict for every row that matches query
         """
-        query = 'select * from ' + self.table_name + ' ' + where
         results = []
         try:
             self.connect()
-            self.cursor.execute(query)
+            self.cursor.execute(query, values)
             results = self.cursor.fetchall()
         except:
             pass
