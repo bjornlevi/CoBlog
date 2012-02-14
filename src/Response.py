@@ -32,7 +32,6 @@ def login_submit():
 
 @bottle.route('/')
 def hello():
-    print session()
     count = int( bottle.request.cookies.get('counter', '0') )
     count += 1
     bottle.response.set_cookie('counter', str(count))
