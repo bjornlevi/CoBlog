@@ -10,6 +10,7 @@ class DB(object):
     def __init__(self):
         object.__init__(self)
         self.database = Settings().appDB
+        print self.database
         self.connect()
         self.close()
         
