@@ -1,6 +1,7 @@
 # coding=utf-8
 import bottle
 from Session import Session
+from DB import DB
 
 bottle.debug(True)
 
@@ -21,7 +22,9 @@ def register():
 
 @bottle.get('/login')
 def login_form():
-    return 'login form'
+    DB().raw_query('create table users (id integer primary key, user text, email text, password text)')
+    DB().raw_query("""insert into users values (NULL, 'bjorn', 'bjornlevi@gmail.com', 'pass')""")
+    return 'login form' + str(DB().raw_query_return('select * from users'))
 
 @bottle.post('/login')
 def login_submit():

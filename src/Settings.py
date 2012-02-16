@@ -3,6 +3,6 @@
 change to reading from an ini file
 """
 class Settings():
-    appDB = 'file:coblog_appDB.sql'
+    appDB = 'coblog_appDB.sql'
     def __init__(self):
         pass

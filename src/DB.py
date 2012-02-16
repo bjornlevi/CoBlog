@@ -10,14 +10,16 @@ class DB(object):
     def __init__(self):
         object.__init__(self)
         self.database = Settings().appDB
-        print self.database
         self.connect()
         self.close()
         
     def connect(self):
-        self.connection = sqlite3.connect(self.database)
-        self.connection.row_factory = sqlite3.Row
-        self.cursor = self.connection.cursor()
+        try:
+            self.connection = sqlite3.connect(self.database)
+            self.connection.row_factory = sqlite3.Row
+            self.cursor = self.connection.cursor()
+        except Exception, e:
+            print e
 
     def commit(self):
         self.connection.commit()
@@ -38,10 +40,25 @@ class DB(object):
         try:
             self.connect()
             self.cursor.execute(query)
-        except:
-            pass
+        except Exception, e:
+            print e
         finally:
             self.commit_and_close()
+
+    def raw_query_return(self, query):
+        """
+        take a raw sql query and execute it
+        @query: the sql query
+        """
+        try:
+            self.connect()
+            self.cursor.execute(query)
+        except Exception, e:
+            print e
+        finally:
+            results = self.cursor.fetchall()
+            self.commit_and_close()
+            return results
     
     def get(self, query, values=()):
         """
@@ -56,8 +73,8 @@ class DB(object):
             self.connect()
             self.cursor.execute(query, values)
             results = self.cursor.fetchall()
-        except:
-            pass
+        except Exception, e:
+            print e
         finally:
             self.commit_and_close()
             return results
