@@ -23,3 +23,24 @@ class Session(DB):
 
     def create_session(self, user):
         pass
+    
+    def new_session(self, user_name):
+        #create a sessionid to save and return
+        char_set = string.ascii_uppercase + string.ascii_lowercase + string.digits
+        sessionid = ''.join(random.sample(char_set,24))
+
+        #set hard limit on cookie lifetime = 1 day
+        expires = datetime.datetime.now() + datetime.timedelta(days=1)
+
+        #delete any sessions this user already has
+        try:
+            self.database.raw_query('delete from sessions where user_name = ?', [user_name])
+        except:
+            pass
+
+        # Insert a row of data
+        try:
+            self.database.add_data('sessions', [sessionid, expires, user_name])
+            return sessionid
+        except Exception, e:
+            return ()    

@@ -14,12 +14,9 @@ class DB(object):
         self.close()
         
     def connect(self):
-        try:
-            self.connection = sqlite3.connect(self.database)
-            self.connection.row_factory = sqlite3.Row
-            self.cursor = self.connection.cursor()
-        except Exception, e:
-            print e
+        self.connection = sqlite3.connect(self.database)
+        self.connection.row_factory = sqlite3.Row
+        self.cursor = self.connection.cursor()
 
     def commit(self):
         self.connection.commit()
