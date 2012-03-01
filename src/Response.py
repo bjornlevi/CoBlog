@@ -22,18 +22,26 @@ def register():
 
 @bottle.get('/login')
 def login_form():
-    return 'login form'
+    return """<form method="post">
+        <p><label for="user">User name</label><input type="text" name="user" id="name" /></p>
+        <p><label for="user">Password</label><input type="password" name="password" /></p>
+        <p><input type="submit" value="log in"></p>
+        </form>
+        """
 
 @bottle.post('/login')
 def login_submit():
-    name     = bottle.request.forms.get('name')
+    user     = bottle.request.forms.get('user')
     password = bottle.request.forms.get('password')
-    bottle.response.set_cookie('sessionid', name, 'asdf')
-    return "<p>"+name + ':'+ password +"</p>"
+    bottle.response.set_cookie('sessionid', user, 'asdf')
+    return "<p>"+ user + ':'+ password +"</p>"
 
 @bottle.get('/groups')
 def get_groups():
-    return model.get_groups()
+    results = ''
+    for row in model.get_groups():
+        results += '<p>'+row['user']+'</p>'
+    return results
     #return 'list of groups <form method="post" action=""><input type="text" name="test"><input type="submit"></form>'
 
 @bottle.post('/groups')

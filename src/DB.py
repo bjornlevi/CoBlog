@@ -3,8 +3,6 @@ from Settings import Settings
 import sqlite3
 import bottle
 
-
-
 class DB(object):
     
     table = None #[col1, col2, ...]

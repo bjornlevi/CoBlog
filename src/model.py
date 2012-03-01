@@ -44,11 +44,12 @@ class DB(object):
         try:
             self.connect()
             self.cursor.execute(query)
-            
+            results = self.cursor.fetchall()
         except Exception, e:
             print e
         finally:
             self.commit_and_close()
+            return results
             
     #Shuo, test create a table,
     def create_table(self):
@@ -66,10 +67,11 @@ def get_groups():
     #query create table ...
     #select * from groups
     #execute sql query and return fetchall
-    DB().create_table()
+    try:DB().create_table()
+    except: pass
     #DB().insert_user(1, 'shuo', '123', 'sdiao@brandeis.edu')
     #DB().query("""INSERT INTO users VALUES (1, 'shuo', '123','sdiao@brandeis.edu')""")
-    DB().query("""INSERT INTO users VALUES (2, 'bjorn', '123','bjorn@brandeis.edu')""")
-    return str(DB().query('select * from users'))
+    DB().query("""INSERT INTO users VALUES (NULL, 'bjorn', '123','bjorn@brandeis.edu')""")
+    return DB().query('select * from users')
             
             
