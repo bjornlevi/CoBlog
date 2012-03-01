@@ -1,7 +1,7 @@
 # coding=utf-8
 import bottle
 from Session import Session
-from DB import DB
+import model
 
 bottle.debug(True)
 
@@ -22,9 +22,7 @@ def register():
 
 @bottle.get('/login')
 def login_form():
-    DB().raw_query('create table users (id integer primary key, user text, email text, password text)')
-    DB().raw_query("""insert into users values (NULL, 'bjorn', 'bjornlevi@gmail.com', 'pass')""")
-    return 'login form' + str(DB().raw_query_return('select * from users'))
+    return 'login form'
 
 @bottle.post('/login')
 def login_submit():
@@ -35,11 +33,13 @@ def login_submit():
 
 @bottle.get('/groups')
 def get_groups():
-    return 'list of groups'
+    return model.get_groups()
+    #return 'list of groups <form method="post" action=""><input type="text" name="test"><input type="submit"></form>'
 
 @bottle.post('/groups')
 def add_group():
-    return 'create new group'
+    test     = bottle.request.forms.get('test')
+    return 'create new group ' + test
 
 @bottle.post('/groups/:group')
 def edit_group():
@@ -90,7 +90,8 @@ def add_like():
 
 @bottle.route('/')
 def hello():
+    data = model.helloShuo()
     count = int( bottle.request.cookies.get('counter', '0') )
     count += 1
     bottle.response.set_cookie('counter', str(count))
-    return 'You visited this page %d times' % count
+    return 'You visited this page %d times' % count + data

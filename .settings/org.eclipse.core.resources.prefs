@@ -1,6 +1,10 @@
-#Tue Feb 28 11:42:08 EST 2012
+#Wed Feb 15 22:02:58 EST 2012
 eclipse.preferences.version=1
+encoding//src/Admin.py=utf-8
+encoding//src/Ajax.py=utf-8
 encoding//src/DB.py=utf-8
 encoding//src/Response.py=utf-8
 encoding//src/Session.py=utf-8
 encoding//src/Settings.py=utf-8
+encoding//src/bottle.py=utf-8
+encoding//src/model.py=utf-8

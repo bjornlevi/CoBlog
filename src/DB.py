@@ -1,6 +1,9 @@
 # coding=utf-8
 from Settings import Settings
 import sqlite3
+import bottle
+
+
 
 class DB(object):
     
@@ -10,6 +13,7 @@ class DB(object):
     def __init__(self):
         object.__init__(self)
         self.database = Settings().appDB
+        print self.database
         self.connect()
         self.close()
         
@@ -37,25 +41,10 @@ class DB(object):
         try:
             self.connect()
             self.cursor.execute(query)
-        except Exception, e:
-            print e
+        except:
+            pass
         finally:
             self.commit_and_close()
-
-    def raw_query_return(self, query):
-        """
-        take a raw sql query and execute it
-        @query: the sql query
-        """
-        try:
-            self.connect()
-            self.cursor.execute(query)
-        except Exception, e:
-            print e
-        finally:
-            results = self.cursor.fetchall()
-            self.commit_and_close()
-            return results
     
     def get(self, query, values=()):
         """
@@ -70,8 +59,8 @@ class DB(object):
             self.connect()
             self.cursor.execute(query, values)
             results = self.cursor.fetchall()
-        except Exception, e:
-            print e
+        except:
+            pass
         finally:
             self.commit_and_close()
             return results
