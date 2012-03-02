@@ -10,22 +10,22 @@ create_comment_table = """ CREATE TABLE comments (id integer PRIMARY KEY, date t
 
 ###########################  GLOBAL TABLE  #############################################
 #Shuo, user_table, global #what information do we need to store, in addition to username and password?
-create_user_table = """ CREATE TABLE users (id integer PRIMARY KEY, user text, pwd text, email text )"""
+q_create_user_table = """ CREATE TABLE users (id integer PRIMARY KEY, user text, pwd text, email text )"""
 
 # ???why do we put image in user_settings_table?~instead of user_table
-create_user_settings_table = """CREATE TABLE user_settings (id integer primary key, user text, image text, group text, about text)"""
+q_create_user_settings_table = """CREATE TABLE user_settings (id integer primary key, user text, image text, group text, about text)"""
 
 # ???table groups other attribute? How do the system link to a single group's database? 
-create_group_table = """ CREATE TABLE groups (id integer PRIMARY KEY, group text, db text)"""
+q_create_group_table = """ CREATE TABLE groups (id integer PRIMARY KEY, group text, db text)"""
 
-create_access_table = """CREATE TABLE access (id integer primary key, user text, group text, role text)"""
+q_create_access_table = """CREATE TABLE access (id integer primary key, user text, group text, role text)"""
 #for example user in group global with role 'admin' can create new groups
 #user with group 'internet and society' and role 'admin' can't create new groups
 #he can however accept group applications and assign roles for people in that group
 #group creator automatically becomes group admin as well
 
 ##############################  USE FOR Login/Logout   ####################
-create_session_table = """CREATE TABLE sessions (id integer primary key, user text, sessionid text, date text)"""
+q_create_session_table = """CREATE TABLE sessions (id integer primary key, user text, sessionid text, date text)"""
 
 
 ################################# DROP TABLES, just for test  ###########################

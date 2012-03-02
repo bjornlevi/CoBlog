@@ -2,6 +2,7 @@
 import bottle
 from Session import Session
 import model
+from DB import DB
 
 bottle.debug(True)
 
@@ -18,7 +19,29 @@ def session():
 
 @bottle.get('/register')
 def register():
-    return 'registration page'
+    #return 'registration page'
+    return """<p>[TESTING] registration page </p><hr/>
+            <form method="post">
+            <p><label for="user">User name: </label><input type="text" name="user" id="name" /></p>
+            <p><label for="user">Password: </label><input type="password" name="password" /></p>
+            <p><label for="email">Email: </label><input type="text" name="email" /></p>
+            <p><input type="submit" value="Register"></p>
+            </form>"""
+            
+@bottle.post('/register')
+def add_user():
+    #SHUO: should get name, pwd, and emial from the registration page. 
+    #name = 'Jeanne'
+    #pwd = '222'
+    #email = name +'@brandeis.edu' 
+    name = bottle.request.forms.get('user')
+    pwd = bottle.request.forms.get('password')
+    email = bottle.request.forms.get('email')
+    
+    results = ''
+    results +=model.add_user(name, pwd, email)
+    return results
+    #return 'register new user if user name does not exist'
 
 @bottle.get('/login')
 def login_form():
@@ -59,7 +82,7 @@ def login_submit():
         #[MODIFY]should jump to different pages.     
     
     bottle.response.set_cookie('sessionid', user, 'asdf')
-    #[MODIFY]
+    #[MODIFY] ADD TO SESSION TABLES
     return message
 
 @bottle.get('/groups')
@@ -84,8 +107,7 @@ def edit_group():
     return 'edit group'
 
 @bottle.post('/user')
-def add_user():
-    return 'register new user if user name does not exist'
+#[MODIFY]should delete later
 
 @bottle.get('/user/:user')
 def get_user():
@@ -136,20 +158,37 @@ def hello():
 
 
 #########    SHUO Test   ######
-@bottle.get('/test')
-def shuotest():  
+@bottle.get('/test1')
+def shuotest1():  
     results = ''
     results += '<p>[TEST] ADD a user, list the number of users, and all users name and email</p>'
-    name = 'Emma'
+    name = 'Jeanne'
     pwd = '222'
     email = name +'@brandeis.edu' 
     
-    for count in  model.add_user(name,pwd,email):
-        results += '<p>add a new user</p><br/><p>current total number of users: ' + str(count['total_user']) + '</p><hr/>'
+    #test
+    #model.add_user(name,pwd,email)
+    
+    #for count in  model.add_user('Alex','1','alex@brandeis.edu'):
+        #results += '<p>add a new user</p><br/><p>current total number of users: ' + str(count['total_user']) + '</p><hr/>'
+
     #results +='<p>TOTAL USERS: '+str(model.add_user('Kiki','000','kiki@brandeis.edu'))+'</p>'
+    #test
+    for total in DB().query('SELECT COUNT(*) AS total_user FROM users'):
+        results +='<p>total users:'+str(total['total_user'])+'</p>'
         
+    #test, add a user
+    results +='<p>[TEST] Add a user:'+model.add_user(name,pwd,email)+'</p>'
+    
+    
     for row in model.get_users():
         results += '<p>'+row['user']+' '+ row ['email']+'</p>'
     
     return results
+
+###test for creating tables
+#[MODIFY]. it doesn't work now.
+@bottle.get('/test2')
+def shuotest2():
+    return model.create_tables()
     
