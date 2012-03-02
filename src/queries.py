@@ -1,14 +1,14 @@
 # coding=utf-8
 #This file defines the schema of tables
 
-#######################LOCAL TABLE####################################3
+#######################LOCAL TABLE####################################
 #posttable: (id, date, title, post, user, status)
 create_post_table = """"CREATE TABLE posts (id integer primary key, date text, title text, post text, user text, status text)"""
 
 #Shuo, comment_table, in each group dataase
 create_comment_table = """ CREATE TABLE comments (id integer PRIMARY KEY, date text, content text, post text, user text)"""
 
-###########################  GLOBAL TABLE  #############################################333
+###########################  GLOBAL TABLE  #############################################
 #Shuo, user_table, global #what information do we need to store, in addition to username and password?
 create_user_table = """ CREATE TABLE users (id integer PRIMARY KEY, user text, pwd text, email text )"""
 
@@ -37,3 +37,9 @@ drop_post_table = """DROP TABLE posts"""
 drop_comment_table = """DROP TABLE comments"""
 
 ################################INSERT INTO TABLES
+
+
+
+###############################  ALL QUERIES OVER TABLES#################q##
+q_get_all_users = """SELECT * FROM users"""
+q_get_all_groups = """SELECT * FROM groups"""

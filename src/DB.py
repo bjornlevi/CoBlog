@@ -43,6 +43,31 @@ class DB(object):
             pass
         finally:
             self.commit_and_close()
+            
+    def query(self, query):
+        try:
+            self.connect()
+            self.cursor.execute(query)
+            results = self.cursor.fetchall()
+        except Exception, e:
+            print e
+        finally:
+            self.commit_and_close()
+            return results
+        
+    #SHUO, wrap to count the number of rows of a query result #return an integer. 
+    def row_count(self,query):
+        try:
+            self.connect()
+            self.cursor.execute(query)
+            #results = self.cursor.fetchall()
+            results = self.cursor.rowcount
+        except Exception, e:
+            print e
+        finally:
+            self.commit_and_close()
+            return results
+        
     
     def get(self, query, values=()):
         """
@@ -131,3 +156,8 @@ class DB(object):
         except:
             self.close()
             return False        
+        
+        
+        
+        
+        

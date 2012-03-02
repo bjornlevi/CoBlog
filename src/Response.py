@@ -33,15 +33,36 @@ def login_form():
 def login_submit():
     user     = bottle.request.forms.get('user')
     password = bottle.request.forms.get('password')
+    
+    message = ''
+    #SHUO:check log in    
+    message +='<p>[TEST] Login Module</p><hr/>'
+    message += '<p>' + user+':' + password +'</p>'
+    message += '<p> CHECK IN DATABASE, PLEASE WAIT...</p>'
+   
+    result = 0 
+    for row in (model.check_login(user, password)):
+        result = row['found']
+    
+    if(result >0):
+        message += '<p>FOUND '+str(result)+' matched users in database.</p>'     
+    else:
+        message += '<p>NOT FOUND. PLEASE REGISTER :)</p>'
+    
+    
     bottle.response.set_cookie('sessionid', user, 'asdf')
-    return "<p>"+ user + ':'+ password +"</p>"
+    return message
 
 @bottle.get('/groups')
 def get_groups():
     results = ''
+    results +='<p>[TEST] show groups</p>'
     for row in model.get_groups():
         results += '<p>'+row['user']+'</p>'
+    #for row in model.get_groups():
+        #results += '<p>'+str(row['total_user'])+'</p><hr/>'
     return results
+    
     #return 'list of groups <form method="post" action=""><input type="text" name="test"><input type="submit"></form>'
 
 @bottle.post('/groups')
@@ -103,3 +124,23 @@ def hello():
     count += 1
     bottle.response.set_cookie('counter', str(count))
     return 'You visited this page %d times' % count + data
+
+
+#########    SHUO Test   ######
+@bottle.get('/test')
+def shuotest():  
+    results = ''
+    results += '<p>[TEST] ADD a user, list the number of users, and all users name and email</p>'
+    name = 'Emma'
+    pwd = '222'
+    email = name +'@brandeis.edu' 
+    
+    for count in  model.add_user(name,pwd,email):
+        results += '<p>add a new user</p><br/><p>current total number of users: ' + str(count['total_user']) + '</p><hr/>'
+    #results +='<p>TOTAL USERS: '+str(model.add_user('Kiki','000','kiki@brandeis.edu'))+'</p>'
+        
+    for row in model.get_users():
+        results += '<p>'+row['user']+' '+ row ['email']+'</p>'
+    
+    return results
+    
