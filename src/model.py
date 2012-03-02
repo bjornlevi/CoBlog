@@ -39,10 +39,10 @@ def check_login(user, pwd):
     return DB().query(myquery)
 #SHUO. check whether a user exists
 def check_user(user):
-    myquery = """SELECT COUNT(*) FROM users WHERE user='"""+user+"""'"""
-    return DB.query(myquery)
+    myquery = """SELECT COUNT(*) AS find_user FROM users WHERE user='"""+user+"""'"""
+    return DB().query(myquery)
 
-#Shuo. check whether the user name and password matches.
+#Shuo. check whether the user name and password matches.#don't need this function
 def check_user_pwd_match(user, pwd):
     myquery = """SELECT COUNT(*) FROM users WHERE user='"""+user+"""' AND password !='"""+pwd+"""'"""
     return DB().query(myquery)

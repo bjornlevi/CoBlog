@@ -47,10 +47,19 @@ def login_submit():
     if(result >0):
         message += '<p>FOUND '+str(result)+' matched users in database.</p>'     
     else:
-        message += '<p>NOT FOUND. PLEASE REGISTER :)</p>'
-    
+        find_user = 0
+        for row in (model.check_user(user)):
+            find_user = row['find_user']
+        
+        if (find_user):
+            message +="""<p>Username and Password doesn't match. Please re-check and login.:)</p>"""
+            #[MODIFY] link to login page
+        else:
+            message +="""<p> Welcome new user. Please Register first. :)</p>"""
+        #[MODIFY]should jump to different pages.     
     
     bottle.response.set_cookie('sessionid', user, 'asdf')
+    #[MODIFY]
     return message
 
 @bottle.get('/groups')
