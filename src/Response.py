@@ -46,9 +46,9 @@ def add_user():
 @bottle.get('/login')
 def login_form():
     return """<form method="post">
-        <p><label for="user">User name</label><input type="text" name="user" id="name" /></p>
-        <p><label for="user">Password</label><input type="password" name="password" /></p>
-        <p><input type="submit" value="log in"></p>
+        <p><label for="user">User name: </label><input type="text" name="user" id="name" /></p>
+        <p><label for="user">Password: </label><input type="password" name="password" /></p>
+        <p><input type="submit" value="Log in"></p>
         </form>
         """
 
@@ -76,31 +76,55 @@ def login_submit():
         
         if (find_user):
             message +="""<p>Username and Password doesn't match. Please re-check and login.:)</p>"""
+            #bottle.redirect('/relogin')#not correct.
+            bottle.redirect("relogin")
             #[MODIFY] link to login page
         else:
             message +="""<p> Welcome new user. Please Register first. :)</p>"""
+            bottle.redirect("register")
         #[MODIFY]should jump to different pages.     
     
     bottle.response.set_cookie('sessionid', user, 'asdf')
     #[MODIFY] ADD TO SESSION TABLES
     return message
 
+@bottle.get('/relogin')
+def relogin():
+
+    #bottle.redirect('login')
+    return """<p>Please check your password and click re-login. </p>
+            <a href="login">Re-Login</a>"""
+
 @bottle.get('/groups')
 def get_groups():
     results = ''
-    results +='<p>[TEST] show groups</p>'
-    for row in model.get_groups():
-        results += '<p>'+row['user']+'</p>'
+    #results +='<p>[TEST] show groups</p>'
+    #for row in model.get_groups():
+        #results += '<p>'+row['group_name']+row['database']+'</p>'
     #for row in model.get_groups():
         #results += '<p>'+str(row['total_user'])+'</p><hr/>'
+        
+    #list the form
+    results +='<p>[TEST]Create a new group here</p><hr/>'
+    results += """<form method="post">
+        <p><label for="groupname">Group Name: </label><input type="text" name="groupname" id="groupname" /></p>
+        <p><label for="database">Database: </label><input type="text" name="database" id = "database"/></p>
+        <p><input type="submit" value="Create a group"></p>
+        </form>
+        """
     return results
     
     #return 'list of groups <form method="post" action=""><input type="text" name="test"><input type="submit"></form>'
 
 @bottle.post('/groups')
 def add_group():
-    test     = bottle.request.forms.get('test')
-    return 'create new group ' + test
+    #get information from form. then call model.addgroup
+    message = ''
+    groupname = bottle.request.forms.get('groupname')
+    database = bottle.request.forms.get('database')
+    message +=model.add_group(groupname, database)
+   
+    return message
 
 @bottle.post('/groups/:group')
 def edit_group():
@@ -162,8 +186,8 @@ def hello():
 def shuotest1():  
     results = ''
     results += '<p>[TEST] ADD a user, list the number of users, and all users name and email</p>'
-    name = 'Jeanne'
-    pwd = '222'
+    name = 'Lucy'
+    pwd = 'llll'
     email = name +'@brandeis.edu' 
     
     #test
@@ -190,5 +214,20 @@ def shuotest1():
 #[MODIFY]. it doesn't work now.
 @bottle.get('/test2')
 def shuotest2():
-    return model.create_tables()
+    return model.create_user_settings()
+
+@bottle.get('/test3')
+def shuotest3():
+    groupname='Design'
+    database = 'DB-'+groupname
+    message = '<p>[TEST] Add a group</p></hr>'
+    message +=model.add_group(groupname, database)
+    
+    message +=model.add_group('GroupB','DB-B')
+    message +=model.add_group('GroupC','DB-C')
+    
+    for row in model.get_groups():
+        message += '<p>'+row['group_name']+','+row['database']+'</p>'
+    
+    return message
     

@@ -55,7 +55,7 @@ class DB(object):
             self.commit_and_close()
             return results
         
-    #SHUO, wrap to count the number of rows of a query result #return an integer. 
+    #SHUO, wrap to count the number of rows of a query result #return an integer. #it doesn't work.
     def row_count(self,query):
         try:
             self.connect()
