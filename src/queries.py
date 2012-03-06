@@ -16,7 +16,7 @@ q_create_user_table = """ CREATE TABLE users (id integer PRIMARY KEY, user text,
 q_create_user_settings_table = """CREATE TABLE user_settings (id integer primary key, user text, image text, group text, about text)"""
 
 # ???table groups other attribute? How do the system link to a single group's database? 
-q_create_group_table = """ CREATE TABLE groups (id integer PRIMARY KEY, group text, db text)"""
+q_create_group_table = """ CREATE TABLE groups (id integer PRIMARY KEY, group_name text, db_name text)"""
 
 q_create_access_table = """CREATE TABLE access (id integer primary key, user text, group text, role text)"""
 #for example user in group global with role 'admin' can create new groups
@@ -32,7 +32,7 @@ q_create_session_table = """CREATE TABLE sessions (id integer primary key, user 
 drop_user_table =""" DROP TABLE users"""
 drop_user_setting_table = """"DROP TABLE user_settings"""
 drop_group_table ="""" DROP TABLE groups"""
-drop_access_table = """"DROP TABLE access"""
+drop_access_table = """"DROP TABLE accesses"""
 drop_post_table = """DROP TABLE posts"""
 drop_comment_table = """DROP TABLE comments"""
 

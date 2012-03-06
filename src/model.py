@@ -4,10 +4,47 @@
 from Settings import Settings # from file import class
 import sqlite3
 from DB import DB
+import datetime #to get the current system time when inserting an element to the sesstion table.
 
 def helloShuo():
-    return 'Hello Shuo'            
+    return 'Hello Shuo' 
+
+#SHUO. when a user login, add the user name, session id, current time to the table sessions      
+def add_session(user, sessionid):
+    #get the current time
+    now = datetime.datetime.now()
+    current_time = str(now.year)+'-'+str(now.month)+'-'+str(now.day)+'  '+str(now.hour)+':'+str(now.minute)+':'+str(now.second)
+    myquery = """INSERT INTO sessions VALUES (NULL, '"""+user+"""','"""+sessionid+"""','"""+current_time+"""')"""
+    message = ''
+    try:
+        DB().raw_query(myquery)
+    except:
+        message += '<p>[TESTING]ERROR in Session().add_session</p>'   
+        return message     
     
+    message +='<p>[TESTING]Successfully add '+user+', '+sessionid+', '+current_time+' to sessions table.</p>'
+    return message
+
+def delete_session(user):
+    myquery = """DELETE FROM sessions WHERE user = '"""+user+"""'"""
+    message =''
+    try:
+        DB().raw_query(myquery)
+    except:
+       message +='<p>[TESTING]ERROR in Session().delete_session.</p>'
+       return message
+   
+    message +='<p> [NOTICE]Successfully delete user '+user+' from the sessions tabnle.</p>'
+    return message
+    
+    
+    
+def get_time():
+    now = datetime.datetime.now()
+    return str(now.year)+'-'+str(now.month)+'-'+str(now.day)+'  '+str(now.hour)+':'+str(now.minute)+':'+str(now.second)
+         
+
+#SHUO. works. returns all the groups' name and database'name in the table groups    
 def get_groups():
     #make table if not exists
     #query create table ...
@@ -20,15 +57,15 @@ def get_groups():
     return DB().query('SELECT * FROM groups')
 
 #shuo
-def add_group(groupname, database):
+def add_group(groupname, dbname):
     message = ''
-    myquery = """INSERT INTO groups VALUES (NULL, '"""+groupname+""",'"""+database+"""')"""
+    myquery = """INSERT INTO groups VALUES (NULL, '"""+groupname+"""','"""+dbname+"""')"""
     try:
         DB().raw_query(myquery)
     except:
         message +='<p>ERROR in model.add_group</p>'
         return message
-    return '<p>Successfully add a group:'+groupname+','+database+'</p>'
+    return '<p>Successfully add a group:'+groupname+','+dbname+'</p>'
     
 
 #SHUO
@@ -92,4 +129,31 @@ def create_tables():
     
     return message
 
+#SHUO. joining a group means adding an entry to  the accesses table
+#Questions; who assigns the role? What is the default value?
+#What is the interface for joining a group
+#get grouo from a list?
+def join_group(user, groupname, role='student'):
+    message = ''
+    message +='<p>[TESTING] Join a group</p>'
+    myquery = """INSERT INTO accesses VALUES (NULL,'"""+user+"""','"""+groupname+"""','"""+role+"""')"""
+    try:
+        DB().raw_query(myquery)
+    except:
+        message +='<p>[ERROR] cannot join a group</p>'
+        return message
+    message +='<p>[NOTICE]'+user+' joins group '+groupname +' as '+role+'. </p>'
+    return message
 
+#doesn't work write now.
+def quit_group(user, groupname, role):
+    message = ''
+    message += '<p>[Testing] Quit a group as a certain role</p>'
+    mequery = """ DELETE FROM accesses WHERE user = '"""+user+"""' AND group_name = '"""+groupname+"""' AND role = '"""+role+"""'"""
+    try:
+        DB().raw_query(myquery)
+    except:
+        message +='<p>[ERROR] cannot quit a group</p>'
+        return message
+    message += '<p> [NOTICE]Remove '+user+'('+role+') from group '+groupname
+    return message

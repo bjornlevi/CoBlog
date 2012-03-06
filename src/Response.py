@@ -9,6 +9,7 @@ bottle.debug(True)
 def application():
     return bottle.app()
 
+#SHUO. assume the session table we have is "CREATE TABLE sessions (id integer primary key, user text, sessionid text, date text)"
 def session():
     sessionid = bottle.request.cookies.get('sessionid', '0')
     if Session().is_valid(sessionid):
@@ -67,8 +68,16 @@ def login_submit():
     for row in (model.check_login(user, password)):
         result = row['found']
     
-    if(result >0):
+    if(result >0):       
+        #add session
+        #add redirect
         message += '<p>FOUND '+str(result)+' matched users in database.</p>'     
+        message += Session().create_session(user)
+        #add redirect to a user specify page.
+        #for now, test logout
+        message +="""<p> Please click Log Out to exit</p>
+                    <a href = "logout/<user>">Log Out</a>"""
+        
     else:
         find_user = 0
         for row in (model.check_user(user)):
@@ -83,8 +92,8 @@ def login_submit():
             message +="""<p> Welcome new user. Please Register first. :)</p>"""
             bottle.redirect("register")
         #[MODIFY]should jump to different pages.     
-    
-    bottle.response.set_cookie('sessionid', user, 'asdf')
+    #set cookie
+    #bottle.response.set_cookie('sessionid', user, 'asdf')
     #[MODIFY] ADD TO SESSION TABLES
     return message
 
@@ -94,6 +103,17 @@ def relogin():
     #bottle.redirect('login')
     return """<p>Please check your password and click re-login. </p>
             <a href="login">Re-Login</a>"""
+
+#just test log out. must odify later.put the             
+@bottle.route('/logout/<user>')
+def logout(user):
+    #pass the user, and delete entries in sessions table
+    message = ''
+    message ='<p>[TESTING] Log Out</p><hr/>'
+    message +=Session().delete_session(user)
+    message ='Log Out sucessfully.:)'   
+    
+    return message
 
 @bottle.get('/groups')
 def get_groups():
@@ -108,7 +128,7 @@ def get_groups():
     results +='<p>[TEST]Create a new group here</p><hr/>'
     results += """<form method="post">
         <p><label for="groupname">Group Name: </label><input type="text" name="groupname" id="groupname" /></p>
-        <p><label for="database">Database: </label><input type="text" name="database" id = "database"/></p>
+        <p><label for="database">Database: </label><input type="text" name="dbname" id = "database"/></p>
         <p><input type="submit" value="Create a group"></p>
         </form>
         """
@@ -121,8 +141,14 @@ def add_group():
     #get information from form. then call model.addgroup
     message = ''
     groupname = bottle.request.forms.get('groupname')
-    database = bottle.request.forms.get('database')
-    message +=model.add_group(groupname, database)
+    dbname = bottle.request.forms.get('dbname')
+    message +=model.add_group(groupname, dbname)
+    
+    message +="<hr/><p>[TESTING] list all the groups in the database</p>"
+    
+    for row in model.get_groups():
+        message +='<p>'+row['group_name']+','+row['db_name']+'</p>'
+        
    
     return message
 
@@ -219,15 +245,67 @@ def shuotest2():
 @bottle.get('/test3')
 def shuotest3():
     groupname='Design'
-    database = 'DB-'+groupname
+    dbname = 'DB-'+groupname
     message = '<p>[TEST] Add a group</p></hr>'
-    message +=model.add_group(groupname, database)
+    message +=model.add_group(groupname, dbname)
     
     message +=model.add_group('GroupB','DB-B')
     message +=model.add_group('GroupC','DB-C')
     
     for row in model.get_groups():
-        message += '<p>'+row['group_name']+','+row['database']+'</p>'
+        message += '<p>'+row['group_name']+','+row['db_name']+'</p>'
     
     return message
+
+@bottle.get('/test4')
+def shuotest4():
+    message =''
+    message +='<p> current time:'+model.get_time()+'</p>'
+    return message
+
+#test generat unique and secure session id
+@bottle.get('/test5')
+def shuotest5():
+    message = '<p>[TESTING] generate session id</p>'
+    message +='<p> session id is: '+ str(Session().generate_session_id())+'</p>';
+    return message
+
+#test select * from session table
+@bottle.get('/test6')
+def shuotest6():
+    message = ''
+    message +='<p>[TESTING] list contents from the session table</p>'
+    
+    for row in DB().query('SELECT * FROM sessions'):
+        message +='<p>' + row['user']+','+row['sessionid']+','+row['date'] + '</p>'        
+    return message
+
+#test the funation of deleteing a session
+@bottle.get('/test7')
+def shuotest7():
+    message =''
+    user = 'bjorn'
+    message +='<p>[TESTING] DELETE sessions</p><hr/>'
+    message +=Session().delete_session(user)
+    return message
+
+#test the function of joining a group
+@bottle.get('/test8')
+def shuotest8():
+    message =''
+    user = 'bjorn'
+    groupname = 'HCI'
+    role = 'admin'
+    
+    message +=model.join_group(user,groupname,role)
+    message +=model.join_group('Shuo','HCI')
+    return message
+
+#test quiting a group. doesn't work. need to check.
+@bottle.get('/test9')
+def shuotest9():
+    message = ''
+    message +=model.quit_group('Shuo','HCI','student')
+    return message
+    
     
