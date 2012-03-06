@@ -43,7 +43,7 @@ class Session(DB):
             return message     
     
         message +='<p>[TESTING]Successfully add '+user+', '+session_id+', '+current_time+' to sessions table.</p>'
-        return message
+        return session_id
         
         #pass
         
