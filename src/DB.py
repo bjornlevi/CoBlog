@@ -39,7 +39,8 @@ class DB(object):
         try:
             self.connect()
             self.cursor.execute(query)
-        except:
+        except Exception, e:
+            print 'database raw query failed: ' + str(e)
             pass
         finally:
             self.commit_and_close()

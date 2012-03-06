@@ -47,6 +47,10 @@ def add_user():
     return results
     #return 'register new user if user name does not exist'
 
+@bottle.get('/user/<user>')
+def user_page(user):
+    return user + ':' + Session().get_sessionid(user)[0]['sessionid']
+
 @bottle.get('/login')
 def login_form():
     user = Session().get_user(get_sessionid())
@@ -97,7 +101,7 @@ def login_submit():
             #[MODIFY] link to login page
         else:
             message +="""<p> Welcome new user. Please Register first. :)</p>"""
-            bottle.redirect("register")
+            bottle.redirect('/user/'+user)
         #[MODIFY]should jump to different pages.     
     #set cookie
     #bottle.response.set_cookie('sessionid', user, 'asdf')
@@ -105,12 +109,12 @@ def login_submit():
     return message
 
 #just test log out. must odify later.put the             
-@bottle.route('/logout/<user>')
-def logout(user):
+@bottle.route('/logout')
+def logout():
     #pass the user, and delete entries in sessions table
     message = ''
     message ='<p>[TESTING] Log Out</p><hr/>'
-    message +=Session().delete_session(user)
+    message +=Session().delete_session(get_sessionid())
     message ='Log Out sucessfully.:)'   
     
     return message
