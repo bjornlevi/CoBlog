@@ -202,13 +202,19 @@ def add_like():
     """
     return 'new like'
 
-@bottle.route('/')
+@bottle.get('/')
 def hello():
-    data = model.helloShuo()
-    count = int( bottle.request.cookies.get('counter', '0') )
-    count += 1
-    bottle.response.set_cookie('counter', str(count))
-    return 'You visited this page %d times' % count + data
+    return 'list of groups + link to create a group if admin'
+
+@bottle.get('/groups/create')
+def create_group():
+    return 'form for creating the group'
+
+@bottle.post('/groups/create')
+def add_group():
+    #name restriction: ONE WORD - CAN'T START WITH A NUMBER
+    #and name is lower cased before processing
+    return 'the actual "adding" of the group --- creating the DB'
 
 
 #########    SHUO Test   ######

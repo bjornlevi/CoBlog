@@ -37,13 +37,10 @@ def delete_session(user):
     message +='<p> [NOTICE]Successfully delete user '+user+' from the sessions tabnle.</p>'
     return message
     
-    
-    
 def get_time():
     now = datetime.datetime.now()
     return str(now.year)+'-'+str(now.month)+'-'+str(now.day)+'  '+str(now.hour)+':'+str(now.minute)+':'+str(now.second)
          
-
 #SHUO. works. returns all the groups' name and database'name in the table groups    
 def get_groups():
     #make table if not exists
@@ -58,6 +55,7 @@ def get_groups():
 
 #shuo
 def add_group(groupname, dbname):
+    #change schema to group, date, creator
     message = ''
     myquery = """INSERT INTO groups VALUES (NULL, '"""+groupname+"""','"""+dbname+"""')"""
     try:
