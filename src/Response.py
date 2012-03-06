@@ -9,10 +9,13 @@ bottle.debug(True)
 def application():
     return bottle.app()
 
+def get_sessionid():
+    return bottle.request.cookies.get('sessionid', '0')
+
 #SHUO. assume the session table we have is "CREATE TABLE sessions (id integer primary key, user text, sessionid text, date text)"
 def session():
     sessionid = bottle.request.cookies.get('sessionid', '0')
-    if Session().is_valid(sessionid):
+    if Session().is_valid(bottle.request.cookies.get('sessionid', '0')):
         bottle.response.set_cookie('sessionid', sessionid)
         return Session().get_user(sessionid)
     else:
@@ -46,12 +49,16 @@ def add_user():
 
 @bottle.get('/login')
 def login_form():
-    return """<form method="post">
-        <p><label for="user">User name: </label><input type="text" name="user" id="name" /></p>
-        <p><label for="user">Password: </label><input type="password" name="password" /></p>
-        <p><input type="submit" value="Log in"></p>
-        </form>
-        """
+    user = Session().get_user(get_sessionid())
+    if user:
+        return "you are already logged in"
+    else:
+        return """<form method="post">
+            <p><label for="user">User name: </label><input type="text" name="user" id="name" /></p>
+            <p><label for="user">Password: </label><input type="password" name="password" /></p>
+            <p><input type="submit" value="Log in"></p>
+            </form>
+            """
 
 @bottle.post('/login')
 def login_submit():
@@ -71,8 +78,8 @@ def login_submit():
     if(result >0):       
         #add session
         #add redirect
-        message += '<p>FOUND '+str(result)+' matched users in database.</p>'     
-        message += Session().create_session(user)
+        message += '<p>FOUND '+str(result)+' matched users in database.</p>'
+        bottle.response.set_cookie('sessionid', Session().create_session(user))
         #add redirect to a user specify page.
         #for now, test logout
         message +="""<p> Please click Log Out to exit</p>
@@ -96,13 +103,6 @@ def login_submit():
     #bottle.response.set_cookie('sessionid', user, 'asdf')
     #[MODIFY] ADD TO SESSION TABLES
     return message
-
-@bottle.get('/relogin')
-def relogin():
-
-    #bottle.redirect('login')
-    return """<p>Please check your password and click re-login. </p>
-            <a href="login">Re-Login</a>"""
 
 #just test log out. must odify later.put the             
 @bottle.route('/logout/<user>')

@@ -31,6 +31,7 @@ class Session(DB):
     #SHUO, add code here. 
     def create_session(self, user):
         now = datetime.datetime.now()
+        expires = datetime.datetime.now() + datetime.timedelta(days=1)
         current_time = str(now.year)+'-'+str(now.month)+'-'+str(now.day)+'  '+str(now.hour)+':'+str(now.minute)+':'+str(now.second)
         session_id = self.generate_session_id()
         myquery = """INSERT INTO sessions VALUES (NULL, '"""+user+"""','"""+session_id+"""','"""+current_time+"""')"""
