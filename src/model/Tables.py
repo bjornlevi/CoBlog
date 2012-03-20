@@ -1,8 +1,6 @@
 # coding=utf-8
 from Settings import Settings
 import sqlite3
-import bottle
-
 
 get_all_posts = """select * from posts"""
 get_all_user_posts = """select * from posts where user = ?"""

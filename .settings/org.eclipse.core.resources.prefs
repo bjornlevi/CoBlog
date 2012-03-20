@@ -1,14 +1,12 @@
-#Fri Mar 02 13:34:28 EST 2012
+#Tue Mar 20 13:34:32 EDT 2012
 eclipse.preferences.version=1
 encoding//src/Admin.py=utf-8
 encoding//src/Ajax.py=utf-8
-encoding//src/DB.py=utf-8
-encoding//src/Response-Error-BackUp-0301.py=utf-8
 encoding//src/Response.py=utf-8
-encoding//src/Session.py=utf-8
-encoding//src/Settings.py=utf-8
-encoding//src/Tables.py=utf-8
 encoding//src/bottle.py=utf-8
-encoding//src/model-Error-BackUp-0301.py=utf-8
-encoding//src/model.py=utf-8
-encoding//src/queries.py=utf-8
+encoding//src/model/DB.py=utf-8
+encoding//src/model/Session.py=utf-8
+encoding//src/model/Settings.py=utf-8
+encoding//src/model/Tables.py=utf-8
+encoding//src/model/model.py=utf-8
+encoding//src/model/queries.py=utf-8

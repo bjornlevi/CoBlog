@@ -1,9 +1,9 @@
 # coding=utf-8
 #Shuo, exercise 2012-02-15
 
-from Settings import Settings # from file import class
+from model.Settings import Settings # from file import class
 import sqlite3
-from DB import DB
+from model.DB import DB
 import datetime #to get the current system time when inserting an element to the sesstion table.
 
 def helloShuo():
