@@ -1,0 +1,9 @@
+TODO:
+	Timeline Fullscreen
+	+ Add Tabs
+	
+	New Post page
+	+ Eliminate incoming stream
+	+ Notifying of changes
+	+ Add a new reference
+	- Move everything up
