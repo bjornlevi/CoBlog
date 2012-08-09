@@ -1,0 +1,12 @@
+Brandeis University
+CoBlog
+
+Stylesheets
+
+layout.css
+	* It contains the layout of the site
+	* Should not contain typography and colors
+
+colors.css
+	* Has color and typography info
+	* No layout info should be specified in this file

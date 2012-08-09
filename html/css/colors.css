@@ -1,0 +1,59 @@
+/* COLORS
+	Background: Black 
+	Header: Black
+	Navigation Bar: #3b403e
+	Global Notifications: #c5ccc9
+	Timeline: #b6a898
+	Notifications: #c2ccbf
+	Performance Gauge: #7d8076
+	Tasks: #8f7d70
+*/
+body {
+	background-color: black;
+}
+
+#header {
+	background-color: black;
+	color: white;
+}
+
+#navbar {
+	background-color: #3b403e;
+}
+
+#globalnot {
+	background-color: #c5ccc9;
+}
+
+#timeline {
+	background-color: #b6a898;
+}
+
+#notifications {
+	background-color: #c2ccbf;
+}
+
+#perf-gauge {
+	background-color: #7d8076;
+}
+
+#tasks {
+	background-color: #8f7d70;
+}
+
+div.header {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+#globalnot div.header h2 {
+	font-size: 1em;
+}
+
+div.header h2 {
+	margin-top: 0px;
+
+	color: white;
+	font-size: 1.2em;
+	font-family: helvetica;
+	font-weight: normal;
+}

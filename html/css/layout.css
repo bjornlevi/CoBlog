@@ -1,3 +1,17 @@
+/* Styled using the guide at
+	http://thinkvitamin.com/design/creating-sexy-stylesheets/
+*/
+
+/* COLORS
+*/
+
+/* HEADER
+   CONTENT
+   DASHBOARD
+*./
+
+/* =HEADER
+   ----------------------------------------*/
 html {
 	height: 100%;
 	margin-top: 0px;
@@ -9,46 +23,52 @@ body {
 }
 
 div {
-	border: 1px solid;
 	margin: 0px;
 	padding: 0px;
 }
 
 #topbar {
 	min-height: 40px;
-	height: 15%;
+	height: 10%;
 	width: 100%;
-	
-	border: 1px solid;
 }
 
 #header {
-	height: 25%;
+	height: 40%;
 	min-height: 10px;
-	border: 1px solid;
 }
 
 #navbar {
-	height: 70%;
+	height: 60%;
 	min-height: 30px;
-	border: 1px solid;
 }
 
+/* =CONTENT
+   ----------------------------------------*/
 #globalnot {
 	float: left;
-	height: 84.5%;
+	height: 90%;
 	width: 15%;
 }
 
+/* =DASHBOARD
+   ----------------------------------------*/
 #dashboard {
 	float: right;
-	height: 84.5%;
-	width: 84.5%;
+	height: 90%;
+	width: 85%;
 }
 
 div.summary {
-	width: 49.7%;
-	height: 49.5%;
+	width: 50%;
+	height: 50%;
+	padding-top: 0px;
+}
+
+div.header {
+	width: 100%;
+	padding-left: 10px;
+	min-height: 22px;
 }
 
 #timeline {
@@ -59,7 +79,7 @@ div.summary {
 	float: right;
 }
 
-#mylinks {
+#perf-gauge {
 	float: left;
 }
 
