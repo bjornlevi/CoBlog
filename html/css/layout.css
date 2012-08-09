@@ -1,0 +1,68 @@
+html {
+	height: 100%;
+	margin-top: 0px;
+}
+
+body {
+	height: 100%;
+	margin: 1px;
+}
+
+div {
+	border: 1px solid;
+	margin: 0px;
+	padding: 0px;
+}
+
+#topbar {
+	min-height: 40px;
+	height: 15%;
+	width: 100%;
+	
+	border: 1px solid;
+}
+
+#header {
+	height: 25%;
+	min-height: 10px;
+	border: 1px solid;
+}
+
+#navbar {
+	height: 70%;
+	min-height: 30px;
+	border: 1px solid;
+}
+
+#globalnot {
+	float: left;
+	height: 84.5%;
+	width: 15%;
+}
+
+#dashboard {
+	float: right;
+	height: 84.5%;
+	width: 84.5%;
+}
+
+div.summary {
+	width: 49.7%;
+	height: 49.5%;
+}
+
+#timeline {
+	float: left;
+}
+
+#notifications {
+	float: right;
+}
+
+#mylinks {
+	float: left;
+}
+
+#tasks {
+	float: right;
+}
